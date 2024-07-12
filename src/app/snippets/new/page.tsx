@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
-import { db } from "@/app/db";
+import { db } from "@/db";
 
 export default function SnippetCreatePage() {
+
+  // Server action
   async function createSnippet(formData: FormData) {
     "use server";
 
@@ -15,8 +17,8 @@ export default function SnippetCreatePage() {
       },
     });
 
-    console.log(snippet);
-    redirect("/");
+    console.log('snippet creado:',snippet);
+    redirect(`/snippets/${snippet.id}`);
   }
 
   return (

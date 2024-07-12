@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
-import { db } from "@/app/db";
+import Link from "next/link";
+import { db } from "@/db";
+import * as actions from "@/actions";
 
 interface SnippetShowPageProps {
   params: {
@@ -12,11 +14,32 @@ export default async function SnippetShowPage(props: SnippetShowPageProps) {
     where: { id: parseInt(props.params.id) },
   });
   if (!snippet) return notFound();
+
+  const deleteSnippetAction = actions.deleteSnippet.bind(null, snippet.id);
   return (
     <div>
-      <h1 className="text-xl">I found the snippet with id {snippet.id}.</h1>
-      <p>{snippet.title}:</p>
-      <p>{snippet.code}</p>
+      <Link href={"/"} className="p-2 border rounded bg-blue-50">
+        Home
+      </Link>
+      <div className="flex m-4 justify-between items-center">
+        <h1 className="text-xl font-bold"> {snippet.title}:</h1>
+        <div className="flex gap-2">
+          <Link
+            className="p-2 border rounded bg-green-200"
+            href={`/snippets/${snippet.id}/edit`}
+          >
+            Edit
+          </Link>
+          <form action={deleteSnippetAction}>
+            <button className="p-2 border rounded bg-red-200" type="submit">
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+      <pre className="p-3 border rounded bg-gray-200 border-gray-200">
+        <code>{snippet.code}</code>
+      </pre>
     </div>
   );
 }
