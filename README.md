@@ -76,3 +76,7 @@ Entonces: se obtienen los datos dentro de un server component y luego para traba
 
 9. Entonces, para llamar a un ServerAction desde un Client Component:
    ![Como llamar un serveraction desde un CC](./theory/sv-action-from-cc.png)
+
+10. Validations con useFormState.
+
+11. Error file error.tsx que tiene que ser un client component
