@@ -39,3 +39,13 @@ ENTONCES.... CUANDO USO SC O CC?
 Luego en el curso se explica mejor.
 
 -Aunque nuestro componente sea un Client Component, el CC se renderiza una vez en el servidor
+
+3. findMany Snippets
+- Como tenemos nuestra bd corriendo en nuestro propio proyecto, lo hacemos con el prisma client bd.snippet.findMany(). en app/page.tsx
+
+4. Rutas dinámicas para obtener solo 1 snippet y NOTFOUND()
+-El nombre de la folder [snippetId] será el nombre del parametro.
+-db.snippet.findFirst()
+-funcion notFound de next/navigation si no encuentra que manda a custom notFound page not-found.tsx
+
+5. loading.tsx que se muestra cuando un server component está fetcheando data.
