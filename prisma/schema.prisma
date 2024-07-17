@@ -15,3 +15,9 @@ model Snippet{
   title String
   code String
 }
+
+model Puppet{
+  id Int @id @default(autoincrement())
+  name String
+  color String
+}

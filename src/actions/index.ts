@@ -13,6 +13,8 @@ export async function editSnippet(id: number, code: string, title: string) {
       title,
     },
   });
+  console.log("snippet edited correctly.");
+
   redirect(`/snippets/${id}`);
 }
 
@@ -20,7 +22,7 @@ export async function deleteSnippet(id: number) {
   await db.snippet.delete({
     where: { id },
   });
-
+  console.log("snippet removed correctly.");
   redirect("/");
 }
 
@@ -29,7 +31,6 @@ export async function createSnippet(
   formData: FormData
 ) {
   try {
-    // Check the user's inputs and make sure they're valid
     const title = formData.get("title") as string;
     const code = formData.get("code") as string;
 
@@ -40,12 +41,13 @@ export async function createSnippet(
       return { message: "Code must be longer." };
 
     // Create a new record in the database
-    await db.snippet.create({
+    let snippet = await db.snippet.create({
       data: {
         title,
         code,
       },
     });
+    console.log("Snippet created!!", snippet);
   } catch (err: unknown) {
     if (err instanceof Error) {
       return {

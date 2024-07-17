@@ -1,11 +1,12 @@
 "use client";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { createSnippet } from "@/actions/";
 
 export default function SnippetCreatePage() {
   const [formState, action] = useFormState(createSnippet, {
     message: "",
   });
+  const { pending: isLoading } = useFormStatus();
 
   return (
     <form action={action}>
@@ -40,7 +41,7 @@ export default function SnippetCreatePage() {
         ) : null}
 
         <button type="submit" className="rounded p-2 bg-blue-200">
-          Create
+          {isLoading ? "Creating..." : "Create"}
         </button>
       </div>
     </form>
