@@ -80,3 +80,26 @@ Entonces: se obtienen los datos dentro de un server component y luego para traba
 10. Validations con useFormState.
 
 11. Error file error.tsx que tiene que ser un client component
+
+*** Sobre el cache y render de data en next ***
+
+12. Comportamientos diferentes al hacer un npm run build. Osea, al correr el código en producción. Se trata del sistema y comportamiento de caché. Diferencia entre rutas static or dynamic. Entonces, una página estatica como la del /, trae los mismos valores que cuando se genero el build. Aunque se agreguen nuevos snippets, traerá los mismos valores. Al refrescar la página se obtienen los mismos exactos valores del archivo html de nuestra bd cuando se buildea el proyecto. Entonces, el comportamiento de caché por defecto es inapropiado para nuestra página '/' porque la data del home page va a cambiar. Se reutiliza el mismo archivo html que se construyó en la build.
+
+13. Qué significa una route static or dynamic?  Al correr npm run build, aparecen simbolos al lado de cada ruta: 
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Por defecto, todas las páginas son estaticas. Para hacerla dinamica hay que hacer cambios.
+Las paginas dinamicas no serán almacenadas en cache por next en el momento de la compilacion.
+Una manera de cambiar una página de static a dynamic es
+   ~export const dynamic = "force-dynamic"; antes del componente.
+   ~/snippets/[id]/edit. Los [] la hacen dynamic.
+
+Hay distintas maneras de controlar el cache de una ruta:
+   ~ time-based: cada x segundos fecth new data. export const revalidate = 3;
+   ~ on-demand: remover el cache de una pagina cuando queramos. revalidatePath('/')
+   ~ disable-caching export con export const dynamic = "force-dynamic";
+
+Entonces, para nuestra app, la opcion de resetear el cache on-demand es la más apropiada porque el cache seguiria activo pero solo se renueva cuando hay un cambio en la data!No hacemos una peticion a la bd cada vez que alguien entra a la pagina.
+
+=> Las paginas dinamicas pierden el almacenamiento de caché y seran un poco más lentas. Pero se puede habilitar algo de caché para estas paginas implementando una función generateStaticParams() y por ejemplo si cargamos todas las paginas [id] en la funcion, se veria la version en cache de cada pagina

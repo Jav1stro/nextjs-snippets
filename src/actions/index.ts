@@ -1,7 +1,7 @@
 "use server";
-
-import { redirect } from "next/navigation";
 import { db } from "@/db";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function editSnippet(id: number, code: string, title: string) {
   await db.snippet.update({
@@ -13,8 +13,11 @@ export async function editSnippet(id: number, code: string, title: string) {
       title,
     },
   });
+
   console.log("snippet edited correctly.");
 
+  revalidatePath(`/snippets/${id}`);
+  revalidatePath("/");
   redirect(`/snippets/${id}`);
 }
 
@@ -22,7 +25,10 @@ export async function deleteSnippet(id: number) {
   await db.snippet.delete({
     where: { id },
   });
+
   console.log("snippet removed correctly.");
+
+  revalidatePath("/");
   redirect("/");
 }
 
@@ -47,6 +53,7 @@ export async function createSnippet(
         code,
       },
     });
+
     console.log("Snippet created!!", snippet);
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -59,6 +66,8 @@ export async function createSnippet(
       };
     }
   }
+
+  revalidatePath("/");
   // Redirect the user back to the root route
   redirect("/");
 }
